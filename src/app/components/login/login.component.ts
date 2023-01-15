@@ -15,6 +15,7 @@ export class LoginComponent implements OnInit {
   isLoginActivated: boolean = true;
   email: string;
   password: string;
+  confirmEmail:string="";
 
   constructor(
     private router: Router,
@@ -62,6 +63,34 @@ export class LoginComponent implements OnInit {
       return 'input-group input-group-outline is-valid my-3';
     } else {
       return 'input-group input-group-outline is-invalid my-3';
+    }
+  }
+
+  sendConfirmMail(){
+    if(this.confirmEmail!=""){
+      this.authService.sendConfirmEmail(this.confirmEmail).subscribe((res)=>{
+        console.log(res)
+        this.toasterService.success(res.message)
+      },(err)=>{
+        console.log(err)
+        this.toasterService.error(err)
+      }
+      )
+    }
+  }
+
+  sendForgotPasswordMail(){
+    console.log(this.confirmEmail)
+    if(this.confirmEmail!=""){
+      console.log(this.confirmEmail)
+      this.authService.sendForgotPassword(this.confirmEmail).subscribe((res)=>{
+        console.log(res)
+        this.toasterService.success(res.message)
+      },(err)=>{
+        console.log(err)
+        this.toasterService.error(err)
+      }
+      )
     }
   }
 }

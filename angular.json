@@ -42,7 +42,7 @@
               "src/assets/js/plugins/smooth-scrollbar.min.js",
               "src/assets/js/plugins/chartjs.min.js",
               "src/assets/js/core/popper.min.js",
-              "src/assets/js/material-dashboard.min.js"
+              "src/assets/js/material-dashboard.js"
             ]
           },
           "configurations": {

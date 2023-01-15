@@ -18,7 +18,38 @@
 </head>
 
 <body class="">
-  <main class="main-content  mt-0">
+  <main class="main-content  mt-0" *ngIf="isRegisterComplete">
+    <section>
+      <div class="page-header min-vh-100">
+        <div class="container">
+          <div class="row">
+            <div class="col-6 d-lg-flex d-none h-100 my-auto pe-0 position-absolute top-0 start-0 text-center justify-content-center flex-column">
+              <div class="position-relative bg-gradient-primary h-100 m-3 px-7 border-radius-lg d-flex flex-column justify-content-center" style="background-image: url('../assets/img/illustrations/illustration-signup.jpg'); background-size: cover;">
+              </div>
+            </div>
+            <div class="col-xl-4 col-lg-5 col-md-7 d-flex flex-column ms-auto me-auto ms-lg-auto me-lg-5">
+              <div class="card card-plain">
+                <div class="card-header">
+                  <h4 class="font-weight-bolder">Kayıt Başarıyla Tamamlandı</h4>
+                  <p><i>Kayıt işleminiz başarıyla tamamlandı. Sisteme Giriş yapabilmeniz için mail adresişnize gelen linki tıklayarak <strong>mailinizi onaylamanız gerekmektedir.</strong> Eğer mail geldiyse giriş sayfasından tekrar onay maili gönderebilirsiniz.</i></p>
+                </div>
+                <div class="card-body">
+
+                </div>
+                <div class="card-footer text-center pt-0 px-lg-2 px-1">
+                  <p class="mb-2 text-sm mx-auto">
+                    Zaten hesabınız var mı?
+                    <a href="/login" class="text-primary text-gradient font-weight-bold">Giriş Yapın</a>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <main class="main-content  mt-0" *ngIf="!isRegisterComplete">
     <section>
       <div class="page-header min-vh-100">
         <div class="container">
@@ -34,27 +65,55 @@
                   <p class="mb-0">Kayıt olmak için bilgilerinizi giriniz</p>
                 </div>
                 <div class="card-body">
-                  <form role="form">
-                    <div class="input-group input-group-outline mb-3">
+                  <form role="form" [formGroup]="registerform">
+                    <h4>Kullanıcı Bilgileri</h4>
+                    <hr>
+                    <div [class]="changeInputClass(name)">
                       <label class="form-label">Ad Soyad</label>
-                      <input type="text" class="form-control">
+                      <input type="text" formControlName="name" [(ngModel)]="name" class="form-control">
                     </div>
-                    <div class="input-group input-group-outline mb-3">
+                    <div [class]="changeInputClass(email)">
                       <label class="form-label">Mail Adresi</label>
-                      <input type="email" class="form-control">
+                      <input type="email" formControlName="email" [(ngModel)]="email" class="form-control">
                     </div>
-                    <div class="input-group input-group-outline mb-3">
+                    <div [class]="changeInputClass(password)">
                       <label class="form-label">Şifre</label>
-                      <input type="password" class="form-control">
+                      <input type="password" formControlName="password" [(ngModel)]="password" class="form-control">
                     </div>
-                    <div class="form-check form-check-info text-start ps-0">
-                      <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" checked>
-                      <label class="form-check-label" for="flexCheckDefault">
-                        I agree the <a href="javascript:;" class="text-dark font-weight-bolder">Terms and Conditions</a>
-                      </label>
+                    <h4>Şirket Bilgileri</h4>
+                    <hr>
+                    <div [class]="changeInputClass(companyName)">
+                      <label class="form-label">Firma Adı</label>
+                      <input type="text" formControlName="companyName" [(ngModel)]="companyName" class="form-control">
                     </div>
-                    <div class="text-center">
-                      <button type="button" class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0">Sign Up</button>
+                    <div [class]="changeInputClass(address)">
+                      <label class="form-label">Adres</label>
+                      <input type="text" formControlName="address" [(ngModel)]="address" class="form-control">
+                    </div>
+                    <div [class]="changeInputClass(taxDepartment)">
+                      <label class="form-label">Vergi Dairesi</label>
+                      <input type="text" formControlName="taxDepartment" [(ngModel)]="taxDepartment" class="form-control">
+                    </div>
+                    <div [class]="changeInputClass(taxIdNumber)">
+                      <label class="form-label">Vergi Numarası</label>
+                      <input type="text" formControlName="taxIdNumber" [(ngModel)]="taxIdNumber" maxlength="10" class="form-control">
+                    </div>
+                    <div [class]="changeInputClass(identityNumber)">
+                      <label class="form-label">T.C. Numarası</label>
+                      <input type="text" formControlName="identityNumber" [(ngModel)]="identityNumber" maxlength="11" class="form-control">
+                    </div>
+                    <div class="form-check form-switch d-flex align-items-center mb-3">
+                      <input class="form-check-input" [(ngModel)]="termsAndConditionsCheck" [ngModelOptions]="{standalone: true}" type="checkbox" id="terms" checked />
+                      <label class="form-check-label mb-0 ms-2" for="terms"><a class="text-dark font-weight-bolder" data-bs-toggle="modal" data-bs-target="#termsAndConditionsModal">Kullanıcı Sözleşmesini Onaylıyorum</a></label>
+                    </div>
+                    <div class="text-center" *ngIf="isRegisterActivated">
+                      <button type="button" class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0" (click)="register()">Kayıt Ol</button>
+                    </div>
+                    <div class="text-center" *ngIf="!isRegisterActivated">
+                      <button class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0" type="button" disabled>
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        Kayıt Yapılıyor...
+                      </button>
                     </div>
                   </form>
                 </div>
@@ -85,3 +144,24 @@
 </body>
 
 </html>
+
+
+<!-- Modal -->
+<div class="modal fade" id="termsAndConditionsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title font-weight-normal" id="exampleModalLabel">Kullanım Sözleşmesi</h5>
+        <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p [innerHTML]="termsAndCondition.description"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Kapat</button>
+      </div>
+    </div>
+  </div>
+</div>

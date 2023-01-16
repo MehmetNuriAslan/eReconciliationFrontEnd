@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, inject, Injectable } from '@angular/core';
 import { ForgotPasswordDto } from '../models/dtos/forgotPasswordDto';
 import { RegisterDto } from '../models/dtos/registerDto';
 import { LoginModel } from '../models/loginModel';
@@ -13,10 +13,13 @@ import { TermsAndConditions } from './termsAndCondition';
 })
 export class AuthService {
   public redirectUrl: string;
-  constructor(private httpclient: HttpClient) { }
+  constructor(
+    private httpclient: HttpClient,
+    @Inject('apiUrl') private apiUrl:string
+    ) { }
 
   register(registerDto: RegisterDto) {
-    let api = 'https://localhost:7297/api/auth/register';
+    let api = this.apiUrl+ 'auth/register';
     return this.httpclient.post<SingleResponseModel<TokenModel>>(
       api,
       registerDto
@@ -24,7 +27,7 @@ export class AuthService {
   }
 
   login(LoginModel: LoginModel) {
-    let api = 'https://localhost:7297/api/auth/login';
+    let api = this.apiUrl+ 'auth/login';
     return this.httpclient.post<SingleResponseModel<TokenModel>>(
       api,
       LoginModel
@@ -32,7 +35,7 @@ export class AuthService {
   }
 
   getTermsAndCondition(){
-    let api = 'https://localhost:7297/api/TermsAndConditions/get';
+    let api = this.apiUrl+ 'TermsAndConditions/get';
     return this.httpclient.get<SingleResponseModel<TermsAndConditions>>(api);
   }
 
@@ -45,27 +48,27 @@ export class AuthService {
   }
 
   sendConfirmEmail(email:string){
-    let api = 'https://localhost:7297/api/auth/sendconfirmemail?email='+email;
+    let api = this.apiUrl+ 'auth/sendconfirmemail?email='+email;
     return this.httpclient.get<ResponseModel>(api);
   }
 
   sendConfirmUser(value:string){
-    let api = 'https://localhost:7297/api/Auth/confirmuser?value='+value;
+    let api = this.apiUrl+ 'Auth/confirmuser?value='+value;
     return this.httpclient.get<ResponseModel>(api);
   }
 
   sendForgotPassword(email:string){
-    let api = 'https://localhost:7297/api/Auth/forgotPassword?email='+email;
+    let api = this.apiUrl+ 'Auth/forgotPassword?email='+email;
     return this.httpclient.get<ResponseModel>(api);
   }
 
   confirmForgotPasswordValue(value:string){
-    let api = 'https://localhost:7297/api/Auth/forgotPasswordLinkCheck?value='+value;
+    let api = this.apiUrl+ 'Auth/forgotPasswordLinkCheck?value='+value;
     return this.httpclient.get(api);
   }
 
   changePasswordToForgotPassword(forgotPasswordDto:ForgotPasswordDto){
-    let api = 'https://localhost:7297/api/Auth/changePasswordToForgotPassword';
+    let api = this.apiUrl+ 'Auth/changePasswordToForgotPassword';
     return this.httpclient.post<ResponseModel>(api,forgotPasswordDto);
   }
 }

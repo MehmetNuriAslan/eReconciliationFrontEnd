@@ -10,9 +10,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { RegisterComponent } from './components/register/register.component';
-import { DatePipe } from '@angular/common';
+import { APP_BASE_HREF, DatePipe, HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { ConfirmComponent } from './components/register/confirm/confirm.component';
 import { ForgotPasswordComponent } from './components/login/forgot-password/forgot-password.component';
+import { NavComponent } from './components/nav/nav.component';
+import { SidenavComponent } from './components/sidenav/sidenav.component';
+import { CurrencyAccountComponent } from './components/currency-account/currency-account.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +24,10 @@ import { ForgotPasswordComponent } from './components/login/forgot-password/forg
     LoginComponent,
     RegisterComponent,
     ConfirmComponent,
-    ForgotPasswordComponent
+    ForgotPasswordComponent,
+    NavComponent,
+    SidenavComponent,
+    CurrencyAccountComponent
   ],
   imports: [
     BrowserModule,
@@ -35,7 +41,11 @@ import { ForgotPasswordComponent } from './components/login/forgot-password/forg
       closeButton:true
     })
   ],
-  providers: [DatePipe],
+  providers: [
+    {provide:'apiUrl',useValue:'https://localhost:7297/api/'},
+    {provide:APP_BASE_HREF,useValue:'/'},
+    [DatePipe]
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

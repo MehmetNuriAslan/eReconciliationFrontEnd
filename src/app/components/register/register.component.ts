@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { RegisterDto } from 'src/app/models/dtos/registerDto';
 import { AuthService } from 'src/app/services/auth.service';
-import { TermsAndConditions } from 'src/app/services/termsAndCondition';
+import { TermsAndConditions } from 'src/app/models/termsAndCondition';
 
 @Component({
   selector: 'app-register',

@@ -6,7 +6,7 @@ import { LoginModel } from '../models/loginModel';
 import { ResponseModel } from '../models/responseModel';
 import { SingleResponseModel } from '../models/singleResponseModel';
 import { TokenModel } from '../models/tokenModel';
-import { TermsAndConditions } from './termsAndCondition';
+import { TermsAndConditions } from '../models/termsAndCondition';
 
 @Injectable({
   providedIn: 'root',

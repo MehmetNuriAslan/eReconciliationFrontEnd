@@ -1,7 +1,7 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
@@ -16,6 +16,11 @@ import { ForgotPasswordComponent } from './components/login/forgot-password/forg
 import { NavComponent } from './components/nav/nav.component';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { CurrencyAccountComponent } from './components/currency-account/currency-account.component';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { CurrencyAccountPipe } from './pipe/currency-account.pipe';
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+import { CurrencyAccountFilterPipe } from './pipe/currency-account-filter.pipe';
 
 @NgModule({
   declarations: [
@@ -27,7 +32,9 @@ import { CurrencyAccountComponent } from './components/currency-account/currency
     ForgotPasswordComponent,
     NavComponent,
     SidenavComponent,
-    CurrencyAccountComponent
+    CurrencyAccountComponent,
+    CurrencyAccountPipe,
+    CurrencyAccountFilterPipe
   ],
   imports: [
     BrowserModule,
@@ -36,14 +43,19 @@ import { CurrencyAccountComponent } from './components/currency-account/currency
     ReactiveFormsModule,
     BrowserAnimationsModule,
     FormsModule,
+    NgxSpinnerModule,
+    SweetAlert2Module.forRoot(),
     ToastrModule.forRoot({
       progressBar:true,
       closeButton:true
     })
   ],
+  schemas:[CUSTOM_ELEMENTS_SCHEMA],
   providers: [
     {provide:'apiUrl',useValue:'https://localhost:7297/api/'},
+    {provide:'validHatasi',useValue:'Zorunlu alanları doldurun'},
     {provide:APP_BASE_HREF,useValue:'/'},
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     [DatePipe]
   ],
   bootstrap: [AppComponent]

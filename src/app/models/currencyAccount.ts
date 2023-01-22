@@ -1,5 +1,5 @@
 export interface CurrencyAccount {
-  Id: number,
+  id: number,
   companyId: number
   code: string
   name: string

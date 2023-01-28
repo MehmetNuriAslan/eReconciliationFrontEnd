@@ -18,10 +18,19 @@ export class SidenavComponent implements OnInit {
   name: string;
   companyName: string;
   currentUrl: string;
-  currencyAccount=false
   userOperationClaims: UserOperationClaim[] = []
   companyId: number;
   userId: number;
+
+  currencyAccount = false
+  user = false
+  company = false
+  mailParameter = false
+  mailTemplate = false
+  accountReconciliation = false
+  baBsReconciliation = false
+
+
   constructor(
     private authService: AuthService,
     private toastr: ToastrService,
@@ -55,12 +64,12 @@ export class SidenavComponent implements OnInit {
     this.router.navigate(["/login"])
     this.isAuthenticated = false
   }
-  changeClass(url:string){
-    this.currentUrl=this.router.routerState.snapshot.url
-    if(url==this.currentUrl){
+  changeClass(url: string) {
+    this.currentUrl = this.router.routerState.snapshot.url
+    if (url == this.currentUrl) {
       return "nav-link text-white active bg-gradient-primary";
     }
-    else{
+    else {
       return "nav-link text-white";
     }
   }
@@ -69,13 +78,37 @@ export class SidenavComponent implements OnInit {
     this.spinner.show()
     this.userOperationClaimService.getlist(this.userId, this.companyId).subscribe((res) => {
       this.userOperationClaims = res.data;
-console.log(res.data)
+      console.log(res.data)
       res.data.forEach(e => {
         if (e.operationName == "Admin") {
           this.currencyAccount = true
+          this.user = true
+          this.company = true
+          this.mailParameter = true
+          this.mailTemplate = true
+          this.accountReconciliation = true
+          this.baBsReconciliation = true
         }
         if (e.operationName == "CurrencyAccount") {
           this.currencyAccount = true
+        }
+        if (e.operationName == "user") {
+          this.user = true
+        }
+        if (e.operationName == "company") {
+          this.company = true
+        }
+        if (e.operationName == "mailParameter") {
+          this.mailParameter = true
+        }
+        if (e.operationName == "mailTemplate") {
+          this.mailTemplate = true
+        }
+        if (e.operationName == "accountReconciliation") {
+          this.accountReconciliation = true
+        }
+        if (e.operationName == "baBsReconciliation") {
+          this.baBsReconciliation = true
         }
       })
 

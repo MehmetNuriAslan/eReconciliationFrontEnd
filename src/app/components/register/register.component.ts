@@ -80,6 +80,9 @@ export class RegisterComponent implements OnInit {
         console.log(this.registerdto)
         this.authservice.register(this.registerdto).subscribe((res) => {
           this.isRegisterComplete=true
+        },err=>{
+          this.toasterService.error(err.error)
+          this.isRegisterActivated=true
         }
         );
       } else {

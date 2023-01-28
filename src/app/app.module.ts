@@ -21,6 +21,7 @@ import { CurrencyAccountPipe } from './pipe/currency-account.pipe';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { CurrencyAccountFilterPipe } from './pipe/currency-account-filter.pipe';
+import { UserComponent } from './components/user/user.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { CurrencyAccountFilterPipe } from './pipe/currency-account-filter.pipe';
     SidenavComponent,
     CurrencyAccountComponent,
     CurrencyAccountPipe,
-    CurrencyAccountFilterPipe
+    CurrencyAccountFilterPipe,
+    UserComponent
   ],
   imports: [
     BrowserModule,

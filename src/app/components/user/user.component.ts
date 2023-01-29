@@ -1,10 +1,11 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { UserDto } from 'src/app/models/userDto';
+import { UserForRegisterToSecondAccountDto } from 'src/app/models/userForRegisterToSecondAccountDto';
 import { UserOperationClaim } from 'src/app/models/UserOperationClaim';
 import { AuthService } from 'src/app/services/auth.service';
 import { UserOperationClaimService } from 'src/app/services/user-operation-claim.service';
@@ -18,6 +19,8 @@ import * as XLSX from 'xlsx';
 })
 export class UserComponent implements OnInit {
 
+  @Inject("validHatasi") private validHatasi: string
+
   title: string = "Aktif Kullanıcı Listeleri"
   jwtHelper: JwtHelperService = new JwtHelperService;
   companyId: number;
@@ -26,6 +29,9 @@ export class UserComponent implements OnInit {
   users: UserDto[] = []
   searchString: string;
   filterText: string = ""
+  userForRegisterToSecondAccountDto: UserForRegisterToSecondAccountDto
+  userUpdateForm: FormGroup
+  userAddForm: FormGroup
 
   pasifList: boolean = false
   aktifList: boolean = true
@@ -34,6 +40,10 @@ export class UserComponent implements OnInit {
   allListCheck: string = ""
   aktiveListCheck: string = ""
   passiveListCheck: string = ""
+
+  name:string= ""
+  email:string= ""
+  password:string= ""
 
   operationAdd = false
   operationUpdate = false
@@ -49,13 +59,15 @@ export class UserComponent implements OnInit {
     private formBuilder: FormBuilder,
     private datepipe: DatePipe,
     private userOperationClaimService: UserOperationClaimService,
-    private userservice: UserService
+    private userservice: UserService,
+    private formbuilder: FormBuilder
   ) { }
 
   ngOnInit(): void {
     this.refresh()
     this.userOperationClaimGetList()
     this.getlist()
+    this.createAddForm()
   }
 
   refresh() {
@@ -65,6 +77,7 @@ export class UserComponent implements OnInit {
       let decode = this.jwtHelper.decodeToken(token)
       let companyId = Object.keys(decode).filter(x => x.endsWith("/anonymous"))[0];
       this.companyId = decode[companyId]
+      console.log(this.companyId)
       let userId = Object.keys(decode).filter(x => x.endsWith("/nameidentifier"))[0];
       this.userId = decode[userId]
     }
@@ -100,7 +113,7 @@ export class UserComponent implements OnInit {
 
       this.spinner.hide()
     }, err => {
-      console.log(err+"operationclaim")
+      console.log(err + "operationclaim")
       this.spinner.hide()
       this.toaster.error("Bir Hatayla Karşılaşşıldı")
     }
@@ -119,9 +132,6 @@ export class UserComponent implements OnInit {
   }
 
   getlistByCheck(text: string) {
-    console.log(this.allList)
-    console.log(this.aktifList)
-    console.log(this.pasifList)
 
     if (text == 'allList') {
       this.aktifList = false
@@ -153,7 +163,28 @@ export class UserComponent implements OnInit {
     }
   }
 
-  add() { }
+  add() {
+
+    if (this.userAddForm.valid) {
+      this.spinner.show()
+      let userModel = Object.assign({}, this.userAddForm.value)
+      console.log(userModel)
+      this.userservice.userRegister(userModel).subscribe(res => {
+        this.spinner.hide()
+        this.toaster.success(res.message)
+        this.getlist()
+        this.createAddForm()
+        document.getElementById("closeaddModel").click()
+      }, err => {
+        this.toaster.error(err.error)
+        this.spinner.hide()
+      }
+      )
+    } else {
+      this.toaster.error(this.validHatasi)
+    }
+
+   }
   update() { }
 
 
@@ -164,10 +195,26 @@ export class UserComponent implements OnInit {
       console.log(res.data)
       this.spinner.hide()
     }, err => {
-      console.log("userlist"+err)
+      console.log("userlist" + err)
       this.spinner.hide()
       this.toaster.error("Bir Hatayla Karşılaşşıldı")
     }
     )
+  }
+  createAddForm() {
+    this.userAddForm = this.formBuilder.group({
+      name: ["", Validators.required],
+      email: ["", Validators.required],
+      password: ["", Validators.required],
+      companyId: [this.companyId, Validators.required],
+    })
+  }
+
+  changeInputClass(text: string) {
+    if (text != '') {
+      return 'input-group input-group-outline is-valid my-3';
+    } else {
+      return 'input-group input-group-outline is-invalid my-3';
+    }
   }
 }

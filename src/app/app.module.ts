@@ -24,6 +24,9 @@ import { CurrencyAccountFilterPipe } from './pipe/currency-account-filter.pipe';
 import { UserComponent } from './components/user/user.component';
 import { UserPipe } from './pipe/user.pipe';
 import { UserFilterPipe } from './pipe/user-filter.pipe';
+import { CompanyComponent } from './components/company/company.component';
+import { CompanyPipePipe } from './pipe/company-pipe.pipe';
+import { CompanyFilterPipe } from './pipe/company-filter.pipe';
 
 @NgModule({
   declarations: [
@@ -40,7 +43,10 @@ import { UserFilterPipe } from './pipe/user-filter.pipe';
     CurrencyAccountFilterPipe,
     UserComponent,
     UserPipe,
-    UserFilterPipe
+    UserFilterPipe,
+    CompanyComponent,
+    CompanyPipePipe,
+    CompanyFilterPipe
   ],
   imports: [
     BrowserModule,

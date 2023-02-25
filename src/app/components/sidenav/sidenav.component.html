@@ -43,11 +43,11 @@
       </a>
     </li>
     <li *ngIf="mailParameter" class="nav-item">
-      <a [class]="changeClass('/mail-parameter')" href="./pages/sign-up.html">
+      <a [class]="changeClass('/mail-parameter')" href="./pages/sign-up.html" data-bs-toggle="modal" data-bs-target="#mailParameterModal" (click)="getMailParameter()">
         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
           <i class="material-icons opacity-10">alternate_email</i>
         </div>
-        <span class="nav-link-text ms-1">Mail Parametreleri</span>
+        <span class="nav-link-text ms-1">Mail Gönderimi</span>
       </a>
     </li>
     <li *ngIf="mailTemplate" class="nav-item">
@@ -83,5 +83,49 @@
   <div class="mx-3">
     <a class="btn bg-gradient-primary mt-4 w-100"
       href="#" type="button" (click)="logout()"><i class="material-icons opacity-10">login</i> Çıkış Yap</a>
+  </div>
+</div>
+
+<div class="modal fade" id="mailParameterModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title font-weight-normal" id="exampleModalLabel">Mail Parametreleri Formu Formu</h5>
+        <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form role="form" [formGroup]="updateForm">
+          <div class="input-group input-group-dynamic is-valid mb-4">
+            <label class="form-label">Mail Adresi</label>
+            <input type="email" formControlName="email" [(ngModel)]="email"class="form-control">
+          </div> email
+          <div class="input-group input-group-dynamic is-valid mb-4">
+            <label class="form-label">Şifre</label>
+            <input type="password" formControlName="password"  class="form-control">
+          </div>
+          <div class="input-group input-group-dynamic is-valid mb-4">
+            <label class="form-label">SMTP</label>
+            <input type="text" formControlName="smtp" class="form-control">
+          </div>
+          <div class="input-group input-group-dynamic is-valid mb-4">
+            <label class="form-label">Port</label>
+            <input type="number" formControlName="port" class="form-control">
+          </div>
+          <div class="form-check form-switch d-flex align-items-center mb-3">
+            <input class="form-check-input" type="checkbox" id="ssl" formControlName="ssl" />
+            <label class="form-check-label mb-0 ms-2" for="ssl" formControlName="ssl" >SSL</label>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn bg-gradient-primary" (click)="update()">Güncelle</button>
+        <button type="submit" class="btn bg-gradient-info" (click)="connectionTest(email)">Bağlantı Test Maili Gönder</button>
+        <button type="button" class="btn bg-gradient-secondary" id="closeupdateModel"
+          data-bs-dismiss="modal">Kapat</button>
+      </div>
+    </div>
   </div>
 </div>

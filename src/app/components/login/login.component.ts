@@ -50,7 +50,7 @@ export class LoginComponent implements OnInit {
         },
         (err) => {
           this.isLoginActivated = true;
-          this.toasterService.error(err.error);
+          this.toasterService.error("Giriş Yapılamadı");
         }
       );
     } else {

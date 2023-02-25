@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { ListResponseModel } from '../models/listResponseModel';
 import { SingleResponseModel } from '../models/singleResponseModel';
 import { TokenModel } from '../models/tokenModel';
-import { UserDto } from '../models/userDto';
+import { UserDto } from '../models/userDto'; 
 import { UserForRegisterToSecondAccountDto } from '../models/userForRegisterToSecondAccountDto';
 
 @Injectable({

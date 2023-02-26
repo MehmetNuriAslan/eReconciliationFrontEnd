@@ -51,7 +51,7 @@
       </a>
     </li>
     <li *ngIf="mailTemplate" class="nav-item">
-      <a [class]="changeClass('/mail-template')" href="./pages/sign-up.html">
+      <a [class]="changeClass('/mail-template')" href="./pages/sign-up.html" data-bs-toggle="modal" data-bs-target="#mailTemplateModal">
         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
           <i class="material-icons opacity-10">comment</i>
         </div>
@@ -124,6 +124,30 @@
         <button type="submit" class="btn bg-gradient-primary" (click)="update()">Güncelle</button>
         <button type="submit" class="btn bg-gradient-info" (click)="connectionTest(email)">Bağlantı Test Maili Gönder</button>
         <button type="button" class="btn bg-gradient-secondary" id="closeupdateModel"
+          data-bs-dismiss="modal">Kapat</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="mailTemplateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title font-weight-normal" id="exampleModalLabel">Mail Şablonları Formu</h5>
+        <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form role="form" [formGroup]="updateMailTemplateForm">
+          <angular-editor [placeholder]="'Enter text here...'" [(ngModel)]="htmlContent"></angular-editor>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn bg-gradient-primary" (click)="update()">Güncelle</button>
+        <button type="button" class="btn bg-gradient-secondary" id="closeMailTempleteModel"
           data-bs-dismiss="modal">Kapat</button>
       </div>
     </div>

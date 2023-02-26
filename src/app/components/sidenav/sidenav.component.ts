@@ -5,6 +5,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { MailParameter } from 'src/app/models/mailParameterModel';
+import { MailTemplate } from 'src/app/models/mailTemplateModel';
 import { UserOperationClaim } from 'src/app/models/UserOperationClaim';
 import { AuthService } from 'src/app/services/auth.service';
 import { MailParameterService } from 'src/app/services/mail-parameter.service';
@@ -26,6 +27,7 @@ export class SidenavComponent implements OnInit {
   userOperationClaims: UserOperationClaim[] = []
   companyId: number;
   userId: number;
+  htmlContent:string
 
   currencyAccount = false
   user = false
@@ -45,8 +47,15 @@ export class SidenavComponent implements OnInit {
     smtp: "",
     ssl: false
   }
+  mailTemplateModel: MailTemplate = {
+    companyId: 0,
+    id: 0,
+    type: "",
+    value: "",
+  }
 
   updateForm:FormGroup;
+  updateMailTemplateForm:FormGroup;
 
   constructor(
     private authService: AuthService,
@@ -74,6 +83,17 @@ export class SidenavComponent implements OnInit {
       port: [0, Validators.required],
       ssl: [false, Validators.required],
     })
+  }
+  createMailTemplateUpdateForm() {
+    this.updateMailTemplateForm = this.formBuilder.group({
+      id: [0, Validators.required],
+      companyId: [this.companyId, Validators.required],
+      type: ["Reconciliation", Validators.required],
+      value: [0, Validators.required],
+    })
+  }
+  changeEditorText(){
+    
   }
 
   refresh() {

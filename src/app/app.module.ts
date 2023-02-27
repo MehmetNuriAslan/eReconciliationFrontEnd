@@ -27,6 +27,8 @@ import { UserFilterPipe } from './pipe/user-filter.pipe';
 import { CompanyComponent } from './components/company/company.component';
 import { CompanyPipePipe } from './pipe/company-pipe.pipe';
 import { CompanyFilterPipe } from './pipe/company-filter.pipe';
+import { QuillModule } from 'ngx-quill';
+import { AngularEditorModule } from '@kolkov/angular-editor';
 
 @NgModule({
   declarations: [
@@ -55,6 +57,8 @@ import { CompanyFilterPipe } from './pipe/company-filter.pipe';
     ReactiveFormsModule,
     BrowserAnimationsModule,
     FormsModule,
+    AngularEditorModule,
+    QuillModule.forRoot(),
     NgxSpinnerModule,
     SweetAlert2Module.forRoot(),
     ToastrModule.forRoot({

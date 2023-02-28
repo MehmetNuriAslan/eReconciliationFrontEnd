@@ -9,6 +9,7 @@ import { MailTemplate } from 'src/app/models/mailTemplateModel';
 import { UserOperationClaim } from 'src/app/models/UserOperationClaim';
 import { AuthService } from 'src/app/services/auth.service';
 import { MailParameterService } from 'src/app/services/mail-parameter.service';
+import { MailTemplateService } from 'src/app/services/mail-template.service';
 import { UserOperationClaimService } from 'src/app/services/user-operation-claim.service';
 @Component({
   selector: 'app-sidenav',
@@ -27,7 +28,7 @@ export class SidenavComponent implements OnInit {
   userOperationClaims: UserOperationClaim[] = []
   companyId: number;
   userId: number;
-  htmlContent:string
+  htmlContent: string
 
   currencyAccount = false
   user = false
@@ -36,7 +37,7 @@ export class SidenavComponent implements OnInit {
   mailTemplate = false
   accountReconciliation = false
   baBsReconciliation = false
-  email:string
+  email: string
 
   mailParametre: MailParameter = {
     companyId: 0,
@@ -54,8 +55,8 @@ export class SidenavComponent implements OnInit {
     value: "",
   }
 
-  updateForm:FormGroup;
-  updateMailTemplateForm:FormGroup;
+  updateForm: FormGroup;
+  updateMailTemplateForm: FormGroup;
 
   constructor(
     private authService: AuthService,
@@ -63,8 +64,9 @@ export class SidenavComponent implements OnInit {
     private router: Router,
     private userOperationClaimService: UserOperationClaimService,
     private spinner: NgxSpinnerService,
-    private formBuilder:FormBuilder,
-    private mailparameterservice:MailParameterService
+    private formBuilder: FormBuilder,
+    private mailparameterservice: MailParameterService,
+    private mailtemplateService: MailTemplateService
   ) { }
   ngOnInit(): void {
     this.isAuthenticated = this.authService.isAuthenticated()
@@ -92,8 +94,12 @@ export class SidenavComponent implements OnInit {
       value: [0, Validators.required],
     })
   }
-  changeEditorText(){
-    
+  changeEditorText() {
+
+  }
+
+  getEditorText() {
+    console.log(this.htmlContent)
   }
 
   refresh() {
@@ -183,7 +189,7 @@ export class SidenavComponent implements OnInit {
   getMailParameter() {
     this.spinner.show()
     this.mailparameterservice.getById(this.companyId).subscribe((res) => {
-      this.mailParametre=res.data
+      this.mailParametre = res.data
       console.log(this.mailParametre)
       this.updateForm.controls["email"].setValue(res.data.email);
       this.updateForm.controls["password"].setValue(res.data.password);
@@ -200,12 +206,13 @@ export class SidenavComponent implements OnInit {
     }
     )
   }
-  connectionTest(email:string)
-  {
-    console.log(email)
+
+  getMailTemplate() {
     this.spinner.show()
-    this.mailparameterservice.connectionTest(email).subscribe((res) => {
- this.toastr.success(res.message)
+    this.mailtemplateService.getCompanyId(this.companyId).subscribe((res) => {
+      if (res.data !=null) {
+        this.htmlContent = res.data.value
+      }
       this.spinner.hide()
     }, err => {
       console.log(err)
@@ -214,7 +221,20 @@ export class SidenavComponent implements OnInit {
     }
     )
   }
-  update(){
+  connectionTest(email: string) {
+    console.log(email)
+    this.spinner.show()
+    this.mailparameterservice.connectionTest(email).subscribe((res) => {
+      this.toastr.success(res.message)
+      this.spinner.hide()
+    }, err => {
+      console.log(err)
+      this.spinner.hide()
+      this.toastr.error("Bir Hatayla Karşılaşşıldı")
+    }
+    )
+  }
+  update() {
     if (this.updateForm.valid) {
       let mailparameterModel = Object.assign({}, this.updateForm.value)
       this.spinner.show()

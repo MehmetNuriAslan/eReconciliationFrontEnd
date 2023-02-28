@@ -51,7 +51,7 @@
       </a>
     </li>
     <li *ngIf="mailTemplate" class="nav-item">
-      <a [class]="changeClass('/mail-template')" href="./pages/sign-up.html" data-bs-toggle="modal" data-bs-target="#mailTemplateModal">
+      <a [class]="changeClass('/mail-template')" href="./pages/sign-up.html" data-bs-toggle="modal" data-bs-target="#mailTemplateModal" (click)="getMailTemplate()">
         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
           <i class="material-icons opacity-10">comment</i>
         </div>
@@ -142,11 +142,11 @@
       </div>
       <div class="modal-body">
         <form role="form" [formGroup]="updateMailTemplateForm">
-          <angular-editor [placeholder]="'Enter text here...'" [(ngModel)]="htmlContent"></angular-editor>
+          <angular-editor style="height: 200;"   [(ngModel)]="htmlContent" [ngModelOptions]="{standalone: true}"></angular-editor>
         </form>
       </div>
       <div class="modal-footer">
-        <button type="submit" class="btn bg-gradient-primary" (click)="update()">Güncelle</button>
+        <button type="submit" class="btn bg-gradient-primary" (click)="getEditorText()">Güncelle</button>
         <button type="button" class="btn bg-gradient-secondary" id="closeMailTempleteModel"
           data-bs-dismiss="modal">Kapat</button>
       </div>
